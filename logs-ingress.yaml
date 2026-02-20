@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: logs-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: logs.local
+    http:
+      paths:
+      - path: /viewer(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: log-viewer
+            port:
+              number: 5002
+      - path: /generator(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: log-generator
+            port:
+              number: 5000
+      - path: /processor(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: log-processor
+            port:
+              number: 5001
