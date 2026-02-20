@@ -1,0 +1,15 @@
+services:
+  log-generator:
+    image: logsgenerator:1.0
+    ports:
+      - "5000:5000"
+
+  log-processor:
+    image: logsprocessor:1.0
+    ports:
+      - "5001:5001"
+
+  log-viewer:
+    image: logsviewer:1.0
+    ports:
+      - "5002:5002"

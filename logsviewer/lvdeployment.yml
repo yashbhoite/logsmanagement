@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-viewer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-viewer
+  template:
+    metadata:
+      labels:
+        app: log-viewer
+    spec:
+      containers:
+      - name: log-viewer
+        image: logsviewer:2.2
+        env:
+        - name: PROCESSOR_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: processorUrl
+        - name: RECEIVER_URL
+          valueFrom:      
+            configMapKeyRef:
+              name: my-config
+              key: receiverUrl
+        ports:
+        - containerPort: 5002 

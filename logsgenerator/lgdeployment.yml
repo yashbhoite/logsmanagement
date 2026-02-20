@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-generator
+  template:
+    metadata:
+      labels:
+        app: log-generator
+    spec:
+      containers:
+      - name: log-generator
+        image: logsgenerator:2.1
+        env:
+        - name: PROCESSOR_URL
+          valueFrom:
+            configMapKeyRef:
+              name: my-config
+              key: processorUrl
+        ports:
+        - containerPort: 5000

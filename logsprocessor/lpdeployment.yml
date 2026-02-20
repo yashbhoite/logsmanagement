@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-processor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-processor
+  template:
+    metadata:
+      labels:
+        app: log-processor
+    spec:
+      containers:
+      - name: log-processor
+        image: logsprocessor:2.1
+        env:
+        - name: RECEIVER_URL
+          valueFrom:      
+            configMapKeyRef:
+              name: my-config
+              key: receiverUrl
+        ports:
+        - containerPort: 5001
