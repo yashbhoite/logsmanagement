@@ -3,7 +3,7 @@ name: Build and Push Viewer Image
 on:
   push:
     paths:
-      - 'log-viewer/**'
+      - 'logsviewer/**'
     branches:
       - master
 
