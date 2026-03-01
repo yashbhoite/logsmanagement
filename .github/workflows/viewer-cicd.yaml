@@ -23,7 +23,7 @@ jobs:
 
     - name: Build Image
       run: |
-        docker build -t yash2505/logsviewer:${{ github.sha }} ./log-viewer
+        docker build -t yash2505/logsviewer:${{ github.sha }} ./logsviewer
 
     - name: Push Image
       run: |
