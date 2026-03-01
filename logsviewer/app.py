@@ -44,7 +44,7 @@ def fix_viewer():
 
 @app.route("/")
 def home():
-    return "Viewer running"
+    return "Viewer running great"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002)

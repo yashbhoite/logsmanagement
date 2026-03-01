@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: log-processor
-        image: logsprocessor:2.1
+        image: yash2505/logsprocessor:4.0
+        imagePullPolicy: Always
         env:
         - name: RECEIVER_URL
           valueFrom:      

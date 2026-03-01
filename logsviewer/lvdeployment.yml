@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: log-viewer
-        image: logsviewer:2.2
+        image: yash2505/logsviewer:4.1
+        imagePullPolicy: Always
         resources:
           requests:
             memory: "128Mi"

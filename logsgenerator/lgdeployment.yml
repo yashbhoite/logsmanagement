@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: log-generator
-        image: logsgenerator:3.2
+        image: yash2505/logsgenerator:4.0
+        imagePullPolicy: Always
         env:
         - name: PROCESSOR_URL
           valueFrom:
