@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: log-viewer
-        image: yash2505/logsviewer:4.1
+        image: yash2505/logsviewer:IMAGE_TAG
         imagePullPolicy: Always
         resources:
           requests:

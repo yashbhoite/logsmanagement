@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -40,3 +40,25 @@ jobs:
       - name: Push Image
         run: |
           docker push yash2505/${{ matrix.service }}:${{ github.sha }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: azure/setup-kubectl@v4
+
+    - name: Configure kubeconfig
+      run: |
+        mkdir -p $HOME/.kube
+        echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+
+    - name: Update image tags
+      run: |
+        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" $(find . -name "*.yml")
+
+    - name: Deploy
+      run: |
+        kubectl apply -R -f .
