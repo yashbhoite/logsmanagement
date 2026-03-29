@@ -4,7 +4,7 @@ import logging
 import requests
 import os
 from datetime import datetime
-
+# application to generate logs and send to processor and viewer
 app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)

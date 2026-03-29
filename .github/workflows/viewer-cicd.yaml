@@ -1,31 +1,42 @@
-name: Build and Push Viewer Image
+name: Build and Push Images
 
 on:
   push:
-    paths:
-      - 'logsviewer/**'
     branches:
       - master
+    paths:
+      - 'logsviewer/**'
+      - 'logsgenerator/**'
+      - 'logsprocessor/**'
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        service:
+          - logsviewer
+          - logsgenerator
+          - logsprocessor
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build Image
-      run: |
-        docker build -t yash2505/logsviewer:${{ github.sha }} ./logsviewer
+      - name: Build Image
+        run: |
+          docker build \
+            -t yash2505/${{ matrix.service }}:${{ github.sha }} \
+            ./${{ matrix.service }}
 
-    - name: Push Image
-      run: |
-        docker push yash2505/logsviewer:${{ github.sha }}
+      - name: Push Image
+        run: |
+          docker push yash2505/${{ matrix.service }}:${{ github.sha }}
