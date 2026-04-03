@@ -61,4 +61,8 @@ jobs:
 
     - name: Deploy
       run: |
-        kubectl apply -R -f .
+        kubectl apply -f loggenerator/
+        kubectl apply -f logprocessor/
+        kubectl apply -f logsviewer/
+        kubectl apply -f logs-ingress.yaml
+        kubectl apply -f configmap.yaml
