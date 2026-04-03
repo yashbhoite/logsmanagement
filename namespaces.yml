@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logsgenerator
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logsprocessor
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: logsviewer

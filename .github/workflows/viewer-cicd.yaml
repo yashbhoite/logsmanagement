@@ -1,4 +1,4 @@
-name: Build and Push Images
+name: CI/CD for Logs Management Services
 
 on:
   push:
@@ -11,16 +11,18 @@ on:
   workflow_dispatch:
 
 jobs:
+  # -------------------
+  # Build & Push Images (Parallel)
+  # -------------------
   build:
     runs-on: self-hosted
-
     strategy:
       matrix:
         service:
           - logsviewer
           - logsgenerator
           - logsprocessor
-
+    name: Build & Push ${{ matrix.service }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -31,38 +33,43 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Image
+      - name: Build Docker Image
         run: |
-          docker build \
-            -t yash2505/${{ matrix.service }}:${{ github.sha }} \
-            ./${{ matrix.service }}
+          docker build -t yash2505/${{ matrix.service }}:${{ github.sha }} ./${{ matrix.service }}
 
-      - name: Push Image
+      - name: Push Docker Image
         run: |
           docker push yash2505/${{ matrix.service }}:${{ github.sha }}
 
+  # -------------------
+  # Deploy Updated Services
+  # -------------------
   deploy:
     needs: build
     runs-on: self-hosted
-
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - uses: azure/setup-kubectl@v4
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v4
 
-    - name: Configure kubeconfig
-      run: |
-        mkdir -p $HOME/.kube
-        echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > $HOME/.kube/config
 
-    - name: Update image tags
-      run: |
-        sed -i "s|IMAGE_TAG|${{ github.sha }}|g" $(find . -name "*.yml")
+      - name: Update Deployment Image Tags
+        run: |
+          # Replace IMAGE_TAG placeholder in all deployment YAMLs with the new image tag
+          find . -name "*.yml" -exec sed -i "s|IMAGE_TAG|${{ github.sha }}|g" {} \;
 
-    - name: Deploy
-      run: |
-        kubectl apply -f logsgenerator/
-        kubectl apply -f logsprocessor/
-        kubectl apply -f logsviewer/
-        kubectl apply -f logs-ingress.yaml
-        kubectl apply -f configmap.yaml
+      - name: Apply Kubernetes Resources
+        run: |
+          # Apply each service folder separately
+          kubectl apply -f logsgenerator/
+          kubectl apply -f logsprocessor/
+          kubectl apply -f logsviewer/
+          kubectl apply -f logs-ingress.yaml
+          kubectl apply -f configmap.yaml
+          kubectl apply -f namespaces.yml
