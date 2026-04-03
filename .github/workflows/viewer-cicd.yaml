@@ -67,9 +67,9 @@ jobs:
       - name: Apply Kubernetes Resources
         run: |
           # Apply each service folder separately
+          kubectl apply -f namespaces.yml
           kubectl apply -f logsgenerator/
           kubectl apply -f logsprocessor/
           kubectl apply -f logsviewer/
           kubectl apply -f logs-ingress.yaml
           kubectl apply -f configmap.yaml
-          kubectl apply -f namespaces.yml
