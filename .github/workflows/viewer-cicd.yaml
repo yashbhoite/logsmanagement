@@ -64,5 +64,5 @@ jobs:
         kubectl apply -f logsgenerator/
         kubectl apply -f logsprocessor/
         kubectl apply -f logsviewer/
-        kubectl apply -f logs-ingress.yml
-        kubectl apply -f configmap.yml
+        kubectl apply -f logs-ingress.yaml
+        kubectl apply -f configmap.yaml
