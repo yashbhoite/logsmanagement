@@ -18,7 +18,10 @@ def receive_log():
 def get_logs():
     # prefer local received logs if any
     if received_logs:
-        return jsonify(received_logs)
+        return jsonify({
+            "message": "Here are the logs you requested",
+            "data": received_logs
+        })
 
     # fallback: fetch from processor if configured
     if PROCESSOR_URL:
