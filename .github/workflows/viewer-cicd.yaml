@@ -68,8 +68,12 @@ jobs:
         run: |
           # Apply each service folder separately
           kubectl apply -f namespaces.yml
+          kubectl apply -f serviceaccounts.yml
+          kubectl apply -f roles.yml
+          kubectl apply -f rolebindings.yml
+          kubectl apply -f configmap.yaml
           kubectl apply -f logsgenerator/
           kubectl apply -f logsprocessor/
           kubectl apply -f logsviewer/
           kubectl apply -f logs-ingress.yaml
-          kubectl apply -f configmap.yaml
+          

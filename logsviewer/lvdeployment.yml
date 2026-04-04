@@ -13,6 +13,7 @@ spec:
       labels:
         app: log-viewer
     spec:
+      serviceAccountName: viewer-sa
       containers:
       - name: log-viewer
         image: yash2505/logsviewer:IMAGE_TAG

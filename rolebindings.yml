@@ -1,0 +1,41 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: generator-binding
+  namespace: logsgenerator
+subjects:
+- kind: ServiceAccount
+  name: generator-sa
+  namespace: logsgenerator
+roleRef:
+  kind: Role
+  name: generator-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: processor-binding
+  namespace: logsprocessor
+subjects:
+- kind: ServiceAccount
+  name: processor-sa
+  namespace: logsprocessor
+roleRef:
+  kind: Role
+  name: processor-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: viewer-binding
+  namespace: logsviewer
+subjects:
+- kind: ServiceAccount
+  name: viewer-sa
+  namespace: logsviewer
+roleRef:
+  kind: Role
+  name: viewer-role
+  apiGroup: rbac.authorization.k8s.io

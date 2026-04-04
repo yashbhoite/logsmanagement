@@ -13,6 +13,7 @@ spec:
       labels:
         app: log-processor
     spec:
+      serviceAccountName: processor-sa
       containers:
       - name: log-processor
         image: yash2505/logsprocessor:IMAGE_TAG

@@ -13,6 +13,7 @@ spec:
       labels:
         app: log-generator
     spec:
+      serviceAccountName: generator-sa
       containers:
       - name: log-generator
         image: yash2505/logsgenerator:IMAGE_TAG
