@@ -1,12 +1,24 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 import requests
 import os
+from prometheus_client import Counter, Histogram, generate_latest
+import time
 
 app = Flask(__name__)
 
 PROCESSOR_URL = os.getenv("PROCESSOR_URL")
 received_logs = []
 healthy = True
+
+REQUEST_COUNT = Counter(
+    "viewer_requests_total",
+    "Total requests to log viewer"
+)
+
+REQUEST_LATENCY = Histogram(
+    "viewer_request_latency_seconds",
+    "Latency of viewer requests"
+)
 
 @app.route("/receive", methods=["POST"])
 def receive_log():
@@ -17,6 +29,8 @@ def receive_log():
 @app.route("/logs")
 def get_logs():
     # prefer local received logs if any
+    start = time.time()
+    REQUEST_COUNT.inc()
     if received_logs:
         return jsonify({
             "message": "Here are the logs you requested",
@@ -30,7 +44,7 @@ def get_logs():
             return jsonify(resp.json())
         except Exception:
             pass
-
+    REQUEST_LATENCY.observe(time.time() - start)
     return jsonify([])
 
 @app.route("/break")
@@ -44,6 +58,10 @@ def fix_viewer():
     global healthy
     healthy = True
     return "Viewer readiness fixed"
+
+@app.route("/metrics")
+def metrics():
+    return Response(generate_latest(), mimetype="text/plain")
 
 @app.route("/")
 def home():
