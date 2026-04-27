@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: log-viewer
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5002"
+        prometheus.io/path: "/metrics"
     spec:
       serviceAccountName: viewer-sa
       containers:
