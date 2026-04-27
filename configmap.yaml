@@ -7,8 +7,8 @@ data:
   generatorPort: "5000"
   processorPort: "5001"
   viewerPort: "5002"
-  processorUrl: "http://log-processor:5001"
-  receiverUrl: "http://log-viewer:5002"
+  processorUrl: "http://log-processor.logsprocessor:5001"
+  receiverUrl: "http://log-viewer.logsviewer:5002"
 
 ---
 
@@ -21,8 +21,8 @@ data:
   generatorPort: "5000"
   processorPort: "5001"
   viewerPort: "5002"
-  processorUrl: "http://log-processor:5001"
-  receiverUrl: "http://log-viewer:5002"
+  processorUrl: "http://log-processor.logsprocessor:5001"
+  receiverUrl: "http://log-viewer.logsviewer:5002"
 
 ---
 
@@ -36,5 +36,5 @@ data:
   generatorPort: "5000"
   processorPort: "5001"
   viewerPort: "5002"
-  processorUrl: "http://log-processor:5001"
-  receiverUrl: "http://log-viewer:5002"
+  processorUrl: "http://log-processor.logsprocessor:5001"
+  receiverUrl: "http://log-viewer.logsviewer:5002"
